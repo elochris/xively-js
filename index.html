@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="http://d23cj0cdvyoxg0.cloudfront.net/xivelyjs-1.0.4.min.js"></script>
+  </head>
+  <body>
+    <p>Click the button to trigger a function.</p>
+    <button onclick="myFunction()">TEST</button>
+    <p id="demo"></p>
+  </body>
+</html>
+
+<script>
+  xively.setKey( "4punAYdChv8k9EKE0u65YBmLDNx9Vji4hPNoWmoIbdTwe58L" );
+  function myFunction()
+  {
+    xively.datastream.update("1171014231", "NODO_0", {current_value: "255"}, function(data){ alert("channel updated");})
+  }
+</script>
