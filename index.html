@@ -5,6 +5,7 @@
     <script src="http://d23cj0cdvyoxg0.cloudfront.net/xivelyjs-1.0.4.min.js"></script>
   </head>
   <body>
+    <p>Click the button to trigger a function puto.</p>
     <button onclick="myFunction()">TEST</button>
     <p><span id="myelement"></span></p>
     <p id="demo"></p>
@@ -32,14 +33,14 @@
 
         // Display the current value from the datastream
         //$(selector).html( feed["current_value"] );
-        $(selector).html( feed["title"] );
+        $(selector).html( feed["datastreams"] );
 
         // Getting realtime! The function associated with the subscribe method will be executed every time there is an update to the datastream
         //xively.datastream.subscribe( feedID, datastreamID, function ( event , datastream_updated ) {
         xively.feed.subscribe( feedID, function ( event , feed_updated ) {
           // Display the current value from the updated datastream
           //$(selector).html( datastream_updated["current_value"] );
-          $(selector).html( feed_updated["title"] );
+          $(selector).html( feed_updated["datastreams"] );
         });
 
       });
