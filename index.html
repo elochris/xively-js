@@ -33,8 +33,8 @@
 			feedID              //id from the tutorial example
 		, function (data) {
 			data.forEach(function (datastream) {
-				document.write("<br><br>Datastream ID:"+JSON.stringify(datastream["id"]));
-				document.write("<br><br>Current value:"+JSON.stringify(datastream["current_value"], null, 4));
+				$(selector).html("<br><br>Datastream ID:"+JSON.stringify(datastream["id"]));
+				$(selector).html("<br><br>Current value:"+JSON.stringify(datastream["current_value"], null, 4));
 			});
 		});
       // Get datastream data from Xively
@@ -56,8 +56,8 @@
           //$(selector).html( datastream_updated["current_value"] );
 //          $(selector).html( feed_updated.datastreams(current_value) );
 		  			feed_updated.forEach(function (datastream) {
-				document.write("<br><br>Datastream ID:"+JSON.stringify(datastream["id"]));
-				document.write("<br><br>Current value:"+JSON.stringify(datastream["current_value"], null, 4));
+				$(selector).html("<br><br>Datastream ID:"+JSON.stringify(datastream["id"]));
+				$(selector).html("<br><br>Current value:"+JSON.stringify(datastream["current_value"], null, 4));
 			});
 //        });
 
