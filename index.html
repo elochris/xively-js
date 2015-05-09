@@ -47,17 +47,21 @@
 
         // Display the current value from the datastream
         //$(selector).html( feed["current_value"] );
-//        $(selector).html( feed.datastreams(current_value));
+//        	$(selector).html( feed.datastreams(current_value));
 
         // Getting realtime! The function associated with the subscribe method will be executed every time there is an update to the datastream
         //xively.datastream.subscribe( feedID, datastreamID, function ( event , datastream_updated ) {
-//        xively.feed.subscribe( feedID, function ( event , feed_updated ) {
+        xively.feed.subscribe( feedID, function ( event , feed_updated ) {
           // Display the current value from the updated datastream
           //$(selector).html( datastream_updated["current_value"] );
 //          $(selector).html( feed_updated.datastreams(current_value) );
+		  			feed_updated.forEach(function (datastream) {
+				document.write("<br><br>Datastream ID:"+JSON.stringify(datastream["id"]));
+				document.write("<br><br>Current value:"+JSON.stringify(datastream["current_value"], null, 4));
+			});
 //        });
 
-//      });
+      });
 
       // WARNING: Code here will continue executing while we get the datastream data from Xively, use the function associated with datastream.get to work with the data, when the request is complete
     });
