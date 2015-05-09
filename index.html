@@ -3,42 +3,87 @@
   <head>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
     <script src="http://d23cj0cdvyoxg0.cloudfront.net/xivelyjs-1.0.4.min.js"></script>
+
   </head>
   <body>
     <p>Click the button to trigger a function.</p>
-    <button onclick="myFunction()">TEST</button>
-    <p><span id="myelement"></span></p>
+    <button type="toggle" id="NODO_0" onclick="myFunction('NODO_0')">NODO_0</button>
+    <button type="toggle" id="NODO_1" onclick="myFunction('NODO_1')">NODO_1</button>
+    <button type="toggle" id="NODO_2" onclick="myFunction('NODO_2')">NODO_2</button>
+    <button type="toggle" id="NODO_3" onclick="myFunction('NODO_3')">NODO_3</button>
+    <button type="toggle" id="NODO_4" onclick="myFunction('NODO_4')">NODO_4</button>
+    <button type="toggle" id="NODO_5" onclick="myFunction('NODO_5')">NODO_5</button>
+  <p><span id="myelement"></span></p>
     <p id="demo"></p>
   </body>
 </html>
 <script>
+function myFunction(datastreamID)
+{
+	  // Set the Xively API key (https://xively.com/users/YOUR_USERNAME/keys)
+  	xively.setKey( "uwXgSWYtxamBxrIu18GpFwss3pKD2W1ef91gaYmrr3qIlIiK" );
+
+  	var feedID        = 843971809,          // Feed ID (the last number on the URL on the feed page on Xively)
+		aux			  = 5;
+	
+	xively.datastream.get (feedID, datastreamID, 
+	function (data)
+	{
+		if(data["current_value"] > 0)
+			aux=0;
+		else
+			aux=9;
+        $(selector).html( datastreamID );
+		xively.datastream.update(feedID, datastreamID,{current_value: aux}, function(data){})
+	});
+	
+}
 // Make sure the document is ready to be handled
-    $(document).ready(function($) {
+    $(document).ready
+	(
+		function($) 
+		{
+
+			  // Set the Xively API key (https://xively.com/users/YOUR_USERNAME/keys)
+			  xively.setKey( "uwXgSWYtxamBxrIu18GpFwss3pKD2W1ef91gaYmrr3qIlIiK" );
 		
+			  // Replace with your own values
+			  var feedID        = 843971809,          // Feed ID (the last number on the URL on the feed page on Xively)
+				  datastreamID  = "NODO_4";       // Datastream ID
+				  selector      = "#myelement";   // Your element on the page - takes any valid jQuery selector
+				  aux           = 0;
 
-		
-
-
-      // Set the Xively API key (https://xively.com/users/YOUR_USERNAME/keys)
-      xively.setKey( "uwXgSWYtxamBxrIu18GpFwss3pKD2W1ef91gaYmrr3qIlIiK" );
-
-      // Replace with your own values
-      var feedID        = 843971809,          // Feed ID (the last number on the URL on the feed page on Xively)
-          datastreamID  = "NODO_0";       // Datastream ID
-          selector      = "#myelement";   // Your element on the page - takes any valid jQuery selector
-
-
-
-		xively.datastream.list(
-			feedID              //id from the tutorial example
-		, function (data) {
-			data.forEach(function (datastream) {
-				$(selector).html("<br><br>Datastream ID:"+JSON.stringify(datastream["id"]));
-				$(selector).html("<br><br>Current value:"+JSON.stringify(datastream["current_value"], null, 4));
+			xively.datastream.list(feedID, 
+			function (data) 
+			{
+				data.forEach(function (datastream) 
+				{
+					xively.datastream.subscribe( feedID, datastream["id"], 
+					function ( event , datastream_updated ) 
+					{
+						if(datastream_updated["current_value"] > 0)
+							$("#"+datastream_updated["id"]).css('background-color','#0F0' );
+						else
+							$("#"+datastream_updated["id"]).css('background-color','#F00' );
+        				$(selector).html( datastream_updated["id"]+": "+datastream_updated["current_value"] );
+					});
+					//document.write("<br><br>Datastream ID:"+JSON.stringify(datastream["id"]));
+					//document.write("<br><br>Current value:"+JSON.stringify(datastream["current_value"], null, 4));
+				});
 			});
-		});
+			
+//		xively.datastream.list(
+//			feedID              //id from the tutorial example
+//		, function (data) {
+//			data.forEach(function (datastream) {
+//				document.write("<br><br>Datastream ID:"+JSON.stringify(datastream["id"]));
+//				document.write("<br><br>Current value:"+JSON.stringify(datastream["current_value"], null, 4));
+//			});
+//		});
       // Get datastream data from Xively
-      //xively.datastream.get (feedID, datastreamID, function ( datastream ) {
+//      			xively.datastream.get (feedID, datastreamID, 
+//					function ( datastream ) 
+//					{
 //		  xively.feed.get (feedID, function ( feed ) {
         // WARNING: This code is only executed when we get a response back from Xively, it will likely execute after the rest your script
         // NOTE: The variable "datastream" will contain all the Datastream information as an object. The structure of Datastream objects can be found at: 
@@ -46,25 +91,45 @@
 
 
         // Display the current value from the datastream
-        //$(selector).html( feed["current_value"] );
+//        				$(selector).html( datastream["current_value"] );
 //        	$(selector).html( feed.datastreams(current_value));
 
         // Getting realtime! The function associated with the subscribe method will be executed every time there is an update to the datastream
-        //xively.datastream.subscribe( feedID, datastreamID, function ( event , datastream_updated ) {
-        xively.feed.subscribe( feedID, function ( event , feed_updated ) {
-          // Display the current value from the updated datastream
-          //$(selector).html( datastream_updated["current_value"] );
-//          $(selector).html( feed_updated.datastreams(current_value) );
-		  			feed_updated.forEach(function (datastream) {
-				$(selector).html("<br><br>Datastream ID:"+JSON.stringify(datastream["id"]));
-				$(selector).html("<br><br>Current value:"+JSON.stringify(datastream["current_value"], null, 4));
-			});
-//        });
+/*        				xively.datastream.subscribe( feedID, datastreamID, 
+						function ( event , datastream_updated ) 
+						{
 
-      });
+          // Display the current value from the updated datastream
+          					$(selector).html( datastream_updated["current_value"] );
+//          $(selector).html( feed_updated.datastreams(current_value) );
+
+		        		});
+
+						xively.feed.subscribe( feedID,  
+						function ( event , feed_updated ) 
+						{
+
+							xively.datastream.list(feedID, 
+							function (data) 
+							{
+								data.forEach(function (datastream) 
+								{
+								document.write("<br><br>Datastream ID:"+JSON.stringify(datastream["id"]));
+								document.write("<br><br>Current value:"+JSON.stringify(datastream["current_value"], null, 4));
+								});
+							});
+
+          // Display the current value from the updated datastream
+          					//$(selector).html( datastream_updated["current_value"] );
+//          $(selector).html( feed_updated.datastreams(current_value) );
+
+		        		});
+*/
+
+//     				});
 
       // WARNING: Code here will continue executing while we get the datastream data from Xively, use the function associated with datastream.get to work with the data, when the request is complete
-    });
+    	});
     </script>
 <script>
 //  xively.setKey( "uwXgSWYtxamBxrIu18GpFwss3pKD2W1ef91gaYmrr3qIlIiK" );
